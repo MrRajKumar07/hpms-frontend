@@ -1,91 +1,95 @@
-import { useDispatch } from 'react-redux';
-import { setLogin } from '../../store/authSlice';
-import { LogIn, ShieldCheck, UserCircle, HeartPulse } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import { loginThunk } from '../../store/authSlice';
+import { toast } from 'react-hot-toast';
+import { LogIn, User, Lock } from 'lucide-react';
+import Input from '../../components/common/Input';
+import Button from '../../components/common/Button';
 
 const LoginPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading } = useSelector((state) => state.auth);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    // Mock Login Function for Phase 1 (Testing Redux)
-    const handleMockLogin = (role) => {
-        const mockUser = {
-            name: 'Raj Kumar',
-            email: 'raj@hpms.in',
-            role: role
-        };
-        dispatch(setLogin(mockUser));
+    const onSubmit = async (data) => {
+        const result = await dispatch(loginThunk(data));
+        if (loginThunk.fulfilled.match(result)) {
+            const role = result.payload.role;
+            toast.success(`Welcome back, ${result.payload.name}`);
+
+            // Role-Based Navigation Map
+            const dashboardMap = {
+                ADMIN: '/admin/dashboard',
+                DOCTOR: '/doctor/dashboard',
+                PATIENT: '/portal',
+                NURSE: '/nurse/dashboard',
+                RECEPTIONIST: '/receptionist/dashboard',
+                PHARMACIST: '/pharmacy',
+                LAB_TECHNICIAN: '/lab'
+            };
+            navigate(dashboardMap[role] || '/');
+        } else {
+            toast.error(result.payload?.message || "Invalid credentials");
+        }
     };
 
     return (
-        <div className="min-h-screen w-full bg-[#0f172a] flex items-center justify-center p-6 relative overflow-hidden">
-
-            {/* --- MODERN BACKGROUND DESIGN --- */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px]" />
-            </div>
-
-            {/* --- GLASSMORPHISM CARD --- */}
-            <div className="relative w-full max-w-[420px] bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-3xl p-10 shadow-2xl transition-all hover:border-white/20">
-
-                {/* LOGO & BRANDING */}
-                <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] mb-4">
-                        <HeartPulse className="text-white w-10 h-10 animate-pulse" />
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+                <div className="flex flex-col items-center mb-8">
+                    <div className="bg-blue-600 p-3 rounded-xl text-white mb-4">
+                        <LogIn size={28} />
                     </div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight">HPMS</h1>
-                    <p className="text-slate-400 mt-2 text-sm">Vital Care. Digital Precision.</p>
+                    <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">HPMS Portal</h1>
+                    <p className="text-slate-500 text-sm">Hospital Patient Management System</p>
                 </div>
 
-                {/* INPUT FIELDS */}
-                <div className="space-y-5">
-                    <div className="group relative">
-                        <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors" size={20} />
-                        <input
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1.5 text-slate-700">
+                            <User size={16} className="text-blue-600" />
+                            <label className="text-sm font-bold">Email Address</label>
+                        </div>
+                        <Input
                             type="email"
-                            placeholder="Medical ID / Email"
-                            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                            placeholder="name@hcltech.com"
+                            {...register("email", { required: "Email is required" })}
+                            error={errors.email?.message}
                         />
                     </div>
 
-                    <div className="group relative">
-                        <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors" size={20} />
-                        <input
+                    <div>
+                        <div className="flex items-center gap-2 mb-1.5 text-slate-700">
+                            <Lock size={16} className="text-blue-600" />
+                            <label className="text-sm font-bold">Password</label>
+                        </div>
+                        <Input
                             type="password"
-                            placeholder="Password"
-                            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                            placeholder="••••••••"
+                            {...register("password", { required: "Password is required" })}
+                            error={errors.password?.message}
                         />
                     </div>
 
-                    <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                        <LogIn size={18} /> Authenticate
-                    </button>
-                </div>
-
-                {/* --- PHASE 1 DEV TOOLS: ROLE SWITCHER --- */}
-                <div className="mt-10 pt-6 border-t border-white/5 text-center">
-                    <span className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block mb-4 italic">Dev 1 Sandbox: Mock Login</span>
-                    <div className="flex gap-3 justify-center">
-                        <button
-                            onClick={() => handleMockLogin('ADMIN')}
-                            className="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium hover:bg-emerald-500/20 transition-all"
-                        >
-                            ADMIN
-                        </button>
-                        <button
-                            onClick={() => handleMockLogin('DOCTOR')}
-                            className="px-4 py-2 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium hover:bg-indigo-500/20 transition-all"
-                        >
-                            DOCTOR
-                        </button>
-                        <button
-                            onClick={() => handleMockLogin('PATIENT')}
-                            className="px-4 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium hover:bg-blue-500/20 transition-all"
-                        >
-                            PATIENT
-                        </button>
+                    <div className="flex justify-end">
+                        <Link to="/forgot-password" size="sm" className="text-xs font-bold text-blue-600 hover:underline">
+                            Forgot Password?
+                        </Link>
                     </div>
-                </div>
 
+                    <Button type="submit" variant="primary" className="w-full py-3" loading={loading}>
+                        Sign In
+                    </Button>
+
+                    <p className="text-center text-sm text-slate-500 pt-4">
+                        New to the team?
+                        <Link to="/register" className="ml-1 text-blue-600 font-bold hover:underline">
+                            Create an account
+                        </Link>
+                    </p>
+                </form>
             </div>
         </div>
     );
