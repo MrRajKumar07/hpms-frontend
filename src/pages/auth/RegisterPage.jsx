@@ -12,7 +12,7 @@ import Button from '../../components/common/Button';
 const RegisterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    
+
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         defaultValues: { role: 'PATIENT' }
     });
@@ -83,9 +83,9 @@ const RegisterPage = () => {
                                     <Lock size={14} className="text-blue-600" />
                                     <label className="text-xs font-bold uppercase tracking-wider">Password</label>
                                 </div>
-                                <Input type="password" {...register("password", { 
+                                <Input type="password" {...register("password", {
                                     required: "Password required",
-                                    minLength: { value: 6, message: "Min 6 characters" } 
+                                    minLength: { value: 6, message: "Min 6 characters" }
                                 })} error={errors.password?.message} />
                             </div>
 
@@ -95,7 +95,7 @@ const RegisterPage = () => {
                                     <ShieldCheck size={14} className="text-blue-600" />
                                     <label className="text-xs font-bold uppercase tracking-wider">Confirm</label>
                                 </div>
-                                <Input type="password" {...register("confirmPassword", { 
+                                <Input type="password" {...register("confirmPassword", {
                                     required: "Please confirm password",
                                     validate: value => value === password || "Passwords must match"
                                 })} error={errors.confirmPassword?.message} />
