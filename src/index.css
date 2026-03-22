@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+@theme {
+    /* Brand Colors for HPMS */
+    --color-brand-primary: #2563eb;
+    /* Blue 600 */
+    --color-brand-secondary: #475569;
+    /* Slate 600 */
+    --color-brand-danger: #dc2626;
+    /* Red 600 */
+
+    /* Custom Animations for Modals and Toasts */
+    @keyframes shimmer {
+        from {
+            transform: translateX(-100%);
+        }
+
+        to {
+            transform: translateX(100%);
+        }
+    }
+}
+
+/* Custom Base Styles */
+@layer base {
+    body {
+        @apply bg-gray-50 text-slate-900 antialiased;
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+}
+
+/* Custom Component Utility */
+@layer components {
+    .glass-effect {
+        @apply bg-white/80 backdrop-blur-md border border-white/20;
+    }
+}
