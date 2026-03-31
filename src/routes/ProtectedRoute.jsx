@@ -14,6 +14,25 @@ const ProtectedRoute = ({ allowedRoles }) => {
         return <Navigate to="/unauthorized" replace />;
     }
 
+    if (allowedRoles && !allowedRoles.includes(user?.role)) {
+
+        // 🔥 Auto-redirect based on role
+        switch (user?.role) {
+            case "ADMIN":
+                return <Navigate to="/admin" replace />;
+            case "NURSE":
+                return <Navigate to="/nurse" replace />;
+            case "RECEPTIONIST":
+                return <Navigate to="/receptionist" replace />;
+            case "PHARMACIST":
+                return <Navigate to="/pharmacist" replace />;
+            case "LAB_TECH":
+                return <Navigate to="/lab-tech" replace />;
+            default:
+                return <Navigate to="/unauthorized" replace />;
+        }
+    }
+
     return <Outlet />;
 };
 

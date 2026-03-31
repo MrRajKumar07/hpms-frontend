@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 
-const Badge = ({ status }) => {
+const Badge = ({ status, children }) => {
   const map = {
+    SUCCESS: "bg-green-100 text-green-700 border-green-200",
+    DANGER: "bg-red-100 text-red-700 border-red-200",
+    WARNING: "bg-yellow-100 text-yellow-700 border-yellow-200",
     // Appointment & Lab Statuses
     PENDING: "bg-yellow-100 text-yellow-700 border-yellow-200",
     CONFIRMED: "bg-blue-100 text-blue-700 border-blue-200",
@@ -17,15 +20,15 @@ const Badge = ({ status }) => {
     DOCTOR: "bg-cyan-100 text-cyan-700 border-cyan-200",
   };
 
+    const key = status?.toUpperCase();
+
+
   return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase tracking-wider ${map[status] || "bg-gray-100 text-gray-600 border-gray-200"}`}>
-      {status}
+    <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase tracking-wider ${map[key] || "bg-gray-100 text-gray-600 border-gray-200"}`}>
+      {children || status}
     </span>
   );
 };
 
-Badge.propTypes = {
-  status: PropTypes.string.isRequired
-};
 
 export default Badge;
