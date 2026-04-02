@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { medicalRecordApi } from '../../api/medicalRecordApi';
-import VitalsCard from '../../components/medical-records/VitalsCard';
-import VitalsForm from '../../components/medical-records/VitalsForm';
+import VitalsCard from './VitalsCard';
+import VitalsForm from './VitalsForm';
 import {
   ArrowLeft, Download, Calendar, User, Stethoscope,
   ClipboardList, FlaskConical, Loader2, ChevronDown, ChevronUp,
