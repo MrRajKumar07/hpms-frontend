@@ -40,6 +40,7 @@ export default function MedicalRecordDetail() {
 
   const canEditVitals = user?.role === 'DOCTOR' || user?.role === 'NURSE';
 
+
   useEffect(() => {
     fetchRecord();
   }, [id]);
