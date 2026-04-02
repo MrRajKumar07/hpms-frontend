@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
+import AIChatWidget from "../../pages/Ai/AIChatWidget";
 
 const Layout = () => {
     return (
@@ -14,6 +15,9 @@ const Layout = () => {
                     </div>
                 </main>
             </div>
+
+            {/* 2. AI Chat Floating Button yahan add kiya */}
+            <AIChatWidget />
         </div>
     );
 };
