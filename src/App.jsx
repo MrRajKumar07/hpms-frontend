@@ -11,10 +11,15 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import Unauthorized from './pages/error/Unauthorized';
 
-// Placeholder Components (Dev 2, 3, 4 will replace these)
-const AdminDashboard = () => <div className="text-2xl font-bold">Admin Control Center</div>;
-const DoctorDashboard = () => <div className="text-2xl font-bold">Doctor Consultation Suite</div>;
-const PatientPortal = () => <div className="text-2xl font-bold">My Health Record</div>;
+// --- NEW AI PAGES ---
+import DoctorAIChatPage from './pages/Ai/DoctorAIChatPage';
+import PatientAIChatPage from './pages/Ai/PatientAIChatPage';
+import RagManagementPage from './pages/Ai/RagManagementPage';
+
+// Placeholder Components
+const AdminDashboard = () => <div className="text-2xl font-bold p-6">Admin Control Center</div>;
+const DoctorDashboard = () => <div className="text-2xl font-bold p-6">Doctor Consultation Suite</div>;
+const PatientPortal = () => <div className="text-2xl font-bold p-6">My Health Record</div>;
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -37,20 +42,27 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
 
-            {/* Logic to send user to their specific dashboard based on role */}
             <Route path="/" element={<RoleRedirect />} />
 
-            {/* Role-Specific Guarded Routes */}
+            {/* --- ADMIN ONLY ROUTES --- */}
             <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              {/* RAG Configuration page */}
+              <Route path="/admin/rag" element={<RagManagementPage />} />
             </Route>
 
+            {/* --- DOCTOR ONLY ROUTES --- */}
             <Route element={<ProtectedRoute allowedRoles={['DOCTOR']} />}>
               <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+              {/* Doctor AI Chat page */}
+              <Route path="/doctor/ai-chat" element={<DoctorAIChatPage />} />
             </Route>
 
+            {/* --- PATIENT ONLY ROUTES --- */}
             <Route element={<ProtectedRoute allowedRoles={['PATIENT']} />}>
               <Route path="/portal" element={<PatientPortal />} />
+              {/* Patient Health Buddy AI page */}
+              <Route path="/patient/ai-buddy" element={<PatientAIChatPage />} />
             </Route>
 
           </Route>
