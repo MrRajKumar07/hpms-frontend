@@ -13,8 +13,14 @@ import Unauthorized from './pages/error/Unauthorized';
 
 // Placeholder Components (Dev 2, 3, 4 will replace these)
 const AdminDashboard = () => <div className="text-2xl font-bold">Admin Control Center</div>;
-const DoctorDashboard = () => <div className="text-2xl font-bold">Doctor Consultation Suite</div>;
-const PatientPortal = () => <div className="text-2xl font-bold">My Health Record</div>;
+
+// Doctor Pages
+import DoctorDashboard from './pages/doctor/DoctorDashboard';
+import DoctorProfile from './pages/doctor/DoctorProfile';
+import DoctorSchedulePage from './pages/doctor/DoctorSchedulePage';
+import DoctorList from './pages/doctor/DoctorList';
+import PatientPortal from './pages/Patient/PatientPortal';
+import PatientProfile from './pages/Patient/PatientProfile';
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -47,10 +53,15 @@ function App() {
 
             <Route element={<ProtectedRoute allowedRoles={['DOCTOR']} />}>
               <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+              <Route path="/doctor/profile" element={<DoctorProfile />} />
+              <Route path="/doctor/schedule" element={<DoctorSchedulePage />} />
+              <Route path="/doctor/doctors" element={<DoctorList />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={['PATIENT']} />}>
               <Route path="/portal" element={<PatientPortal />} />
+              <Route path="/patients/:id" element={<PatientProfile />} />
+              <Route path="/patients/me" element={<PatientProfile />} />
             </Route>
 
           </Route>
