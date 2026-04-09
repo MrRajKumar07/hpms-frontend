@@ -9,12 +9,12 @@ export default function DoctorDashboard() {
   useEffect(() => {
     doctorApi.getDashboard()
       .then(res => {
-        setData(res || {}); // ✅ already cleaned in API
+        setData(res || {}); 
         setLoading(false);
       })
       .catch(err => {
         console.error("Dashboard error:", err);
-        setData({}); // ✅ fallback
+        setData({}); 
         setLoading(false);
       });
   }, []);

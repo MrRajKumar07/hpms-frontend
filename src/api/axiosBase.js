@@ -4,7 +4,6 @@ import { setLogout, setTokens } from '../store/authSlice';
 
 const axiosBase = axios.create({
     baseURL: 'http://localhost:8788/api/v1',
-    headers: { 'Content-Type': 'application/json' }
 });
 
 axiosBase.interceptors.request.use((config) => {
@@ -12,6 +11,12 @@ axiosBase.interceptors.request.use((config) => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    if (!(config.data instanceof FormData)) {
+        config.headers['Content-Type'] = 'application/json';
+    } else {
+        delete config.headers['Content-Type'];
+    }
+
     return config;
 });
 
@@ -26,6 +31,7 @@ axiosBase.interceptors.response.use(
             try {
                 const refreshToken = localStorage.getItem('refreshToken');
                 if (!refreshToken) throw new Error("No refresh token");
+
                 const { data } = await axios.post('http://localhost:8788/api/v1/auth/refresh', { refreshToken });
 
                 store.dispatch(setTokens({
