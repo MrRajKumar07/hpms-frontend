@@ -31,7 +31,7 @@ const Sidebar = () => {
 
         // SHARED
         { label: 'Appointments', path: '/appointments', icon: Calendar, visible: hasRole(['ADMIN', 'DOCTOR', 'PATIENT', 'RECEPTIONIST']) },
-        { label: 'User Directory', path: '/users', icon: Users, visible: hasRole(['ADMIN', 'RECEPTIONIST']) },
+        { label: 'User Management', path: '/admin/users', icon: Users, visible: hasRole(['ADMIN', 'RECEPTIONIST']) },
     ];
 
     const links = menuConfig.filter(link => link.visible);

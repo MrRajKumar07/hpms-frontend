@@ -1,22 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-    /* Brand Colors for HPMS */
+    /* Brand Colors - AI Specific */
     --color-brand-primary: #2563eb;
-    /* Blue 600 */
-    --color-brand-secondary: #475569;
-    /* Slate 600 */
+    --color-brand-secondary: #0d9488;
+    --color-brand-accent: #4f46e5;
     --color-brand-danger: #dc2626;
-    /* Red 600 */
 
-    /* Custom Animations for Modals and Toasts */
-    @keyframes shimmer {
-        from {
-            transform: translateX(-100%);
+    /* AI Thinking & Pulse Animations */
+    @keyframes typing {
+
+        0%,
+        80%,
+        100% {
+            transform: translateY(0);
         }
 
-        to {
-            transform: translateX(100%);
+        40% {
+            transform: translateY(-5px);
+        }
+    }
+
+    @keyframes gradient-move {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
         }
     }
 }
@@ -24,14 +39,70 @@
 /* Custom Base Styles */
 @layer base {
     body {
-        @apply bg-gray-50 text-slate-900 antialiased;
+        @apply bg-slate-50 text-slate-900 antialiased selection:bg-blue-100;
         font-family: 'Inter', system-ui, sans-serif;
     }
 }
 
-/* Custom Component Utility */
 @layer components {
+
+    .prose h3 {
+        @apply font-black text-sm my-3 text-blue-700 uppercase tracking-tighter flex items-center gap-2;
+    }
+
+    .prose p {
+        @apply mb-3 leading-relaxed text-slate-600 font-medium;
+    }
+
+    .prose ul {
+        @apply list-disc list-inside my-2 space-y-1 text-slate-700 bg-blue-50/50 p-2 rounded-lg border border-blue-100/50;
+    }
+
+    .prose li {
+        @apply ml-2;
+    }
+
+    .prose strong {
+        @apply font-bold text-slate-900 bg-yellow-50 px-1 rounded;
+    }
+
+    .prose blockquote {
+        @apply border-l-4 border-rose-500 bg-rose-50 p-3 my-3 italic rounded-r-lg text-rose-700 font-bold;
+    }
+
+    /* AI Chat Bubble Effect */
+    .ai-bubble-bot {
+        @apply bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-300;
+    }
+
+    .ai-bubble-user {
+        @apply bg-brand-primary text-white shadow-lg shadow-blue-100;
+    }
+
+    /* Modern Glass Effect */
     .glass-effect {
-        @apply bg-white/80 backdrop-blur-md border border-white/20;
+        @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-2xl;
+    }
+
+    /* AI Gradient Text */
+    .text-ai-gradient {
+        @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-teal-500 bg-clip-text text-transparent animate-[gradient-move_5s_ease_infinite] bg-[length:200%_200%];
+    }
+
+    /* Ingest Progress Bar */
+    .progress-shimmer {
+        @apply relative overflow-hidden bg-slate-200 rounded-full h-2;
+    }
+
+    .progress-shimmer::after {
+        content: "";
+        @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent;
+        animation: shimmer 1.5s infinite;
+    }
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
     }
 }
